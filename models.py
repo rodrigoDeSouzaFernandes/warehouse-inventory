@@ -11,7 +11,6 @@ class Product:
 class AddProductDTO:
     name: str
     quantity: int
-    date: datetime
     operator: str
 
 @dataclass
