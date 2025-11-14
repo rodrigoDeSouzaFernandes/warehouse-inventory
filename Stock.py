@@ -22,4 +22,5 @@ class Stock:
     def get_product_by_name(self, name:str) -> Product | None:
         return next((p for p in self.__products if p.name == name), None)
     
-  
+    def get_product_by_id(self, id:int) -> Product | None:
+        return next((p for p in self.__products if p.id == id), None)
