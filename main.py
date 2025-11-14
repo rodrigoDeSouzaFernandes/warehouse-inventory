@@ -1,4 +1,4 @@
-from Stock import Stock
+from stock import Stock
 
 stock = Stock()
 

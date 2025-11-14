@@ -1,18 +1,4 @@
-from dataclasses import dataclass
-from datetime import datetime
-
-@dataclass
-class Product:
-    id: int
-    name: str
-    quantity: int
-
-@dataclass
-class StockMovement:
-    product: Product
-    date: datetime
-    operator: str
-
+from models import Product, StockMovement, AddProductDTO
 
 class Stock:
     def __init__(self):
@@ -24,3 +10,8 @@ class Stock:
     
     def get_product_by_id(self, id:int) -> Product | None:
         return next((p for p in self.__products if p.id == id), None)
+
+    def add_product(self, movement:StockMovement) -> None:
+        product_exists: Product = self.get_product_by_name(movement.product.name)
+
+        
