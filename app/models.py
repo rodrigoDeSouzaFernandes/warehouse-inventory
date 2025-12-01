@@ -19,3 +19,8 @@ class StockMovement:
     product: Product
     date: datetime
     operator: str
+
+@dataclass
+class WithdrawProductDTO:
+    id: int
+    quantity:int

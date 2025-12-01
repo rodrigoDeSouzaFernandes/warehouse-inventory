@@ -1,4 +1,4 @@
-from models import Product, StockMovement, AddProductDTO
+from models import Product, StockMovement, AddProductDTO, WithdrawProductDTO
 from datetime import datetime
 from history import History
 
@@ -51,6 +51,17 @@ class Stock:
             movement = StockMovement(new_product, product.date, product.operator)
             self.__products.append(new_product)
         self.__history.add_history(movement)
+    
+    def withdraw_product(self, product: WithdrawProductDTO) -> None:
+        stock_product = self.get_product_by_id(product.id)
+
+        if(product.quantity > stock_product.quantity):
+            raise ValueError("Estoque insuficiente para realizar esta operação")
+        
+        stock_product.quantity = stock_product.quantity - product.quantity
+        self.update_product(stock_product)
+
+        
 
 
 
