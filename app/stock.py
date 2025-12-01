@@ -42,13 +42,13 @@ class Stock:
 
         if stock_product:    
             product_movement = Product(stock_product.id, stock_product.name, product.quantity)
-            movement = StockMovement(product_movement, datetime.now(), product.operator)
+            movement = StockMovement(product_movement, product.date, product.operator)
             stock_product.quantity += product.quantity
             self.update_product(stock_product)
         else:
             next_id: int = self.__products[-1].id + 1 if len(self.__products) > 0 else 1
             new_product: Product = Product(next_id, product.name, product.quantity)
-            movement = StockMovement(new_product, datetime.now(), product.operator)
+            movement = StockMovement(new_product, product.date, product.operator)
             self.__products.append(new_product)
         self.__history.add_history(movement)
 

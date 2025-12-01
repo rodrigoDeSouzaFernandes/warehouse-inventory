@@ -12,6 +12,7 @@ class AddProductDTO:
     name: str
     quantity: int
     operator: str
+    date: datetime
 
 @dataclass
 class StockMovement:
