@@ -7,16 +7,8 @@ from helpers import ERROR, SUCCESS, ALERT, RESET, input_text, input_int, input_d
 history = History()
 stock = Stock(history)
 
-while(True):
-    clear_console()
-    operator = input_text("Informe o seu nome")
-    print(f"{ALERT}\nSeu nome é {operator}{RESET}")
-    option = input("\n1 - Confirmar\n0 - Alterar\n\n>>>")
-
-    match option:
-        case "1": break
-        case "0": pass
-        case _: print("teste")
+isRunning = True
+operator = ""
 
 menuOptions = {
     "1": "Listar todos os produtos",
@@ -34,7 +26,7 @@ def print_menu_options():
 
 def add_product():
     clear_console()
-    print("----- Adicionar produto -----")
+    print("----- Adicionar Produto -----")
     name = input_text("Informe o nome do produto")
     quantity = input_int("Informe a quantidade")
     date = input_date()
@@ -42,7 +34,7 @@ def add_product():
     new_product = AddProductDTO(
         name,
         quantity,
-        operator="Rodrigo",
+        operator,
         date=date,
     )
 
@@ -52,14 +44,14 @@ def add_product():
 
 def remove_product():
     clear_console()
-    print("----- Retirar produto -----")
+    print("----- Retirar Produto -----")
     id = input_int("Informe o ID do produto a ser retirado")
     quantity = input_int("Informe a quantidade a ser retirada")
 
     product = WithdrawProductDTO(
         id,
         quantity,
-        operator="Rodrigo"
+        operator
     )
 
     try:
@@ -72,6 +64,7 @@ def remove_product():
 
 def list_all_products():
     clear_console()
+    print("----- Listagem de Produtos -----")
     products = stock.get_products()
     print(f"{"ID":<5} | {"Nome":<20} | {"Quantidade":<5}")
 
@@ -83,6 +76,7 @@ def list_all_products():
 
 def get_product_by_id():
     clear_console()
+    print("----- Buscar Produto por ID -----")
     id = input_int("Informe o ID do produto")
     product = stock.get_product_by_id(id)
     if product is None:
@@ -98,6 +92,8 @@ def get_product_by_id():
 
 def find_products_by_name():
     clear_console()
+    print("----- Buscar Produtos por Nome -----")
+
     name = input_text("Informe o nome ou parte do nome do produto")
     products = stock.get_products_by_name(name)
     clear_console()
@@ -115,6 +111,7 @@ def find_products_by_name():
 def get_product():
     while(True):
         clear_console()
+        print("----- Buscar Produto -----")
         option = input("\nDeseja buscar por:\n\n1 - Id   [Retorna um produto]\n2 - Nome [Retorna uma lista]\n\n0 - Voltar\n\n>>>")
         match option:
             case "1":
@@ -128,6 +125,7 @@ def get_product():
 
 def get_history():
     clear_console()
+    print("----- Histórico de Movimentações -----")
     history = stock.get_history()
 
     if len(history) > 0:
@@ -139,11 +137,21 @@ def get_history():
     
     input("\nPressione ENTER para retornar\n")
 
-isRunning = True
+while(True):
+    clear_console()
+    print("----- SISTEMA DE ESTOQUE -----")
+    operator = input_text("Informe o seu nome")
+    print(f"{ALERT}\nSeu nome é {operator}{RESET}")
+    option = input("\n1 - Confirmar\n0 - Alterar\n\n>>>")
+
+    match option:
+        case "1": break
+        case "0": pass
+        case _: print("teste")
 
 while(isRunning):
     clear_console()
-    print("---- SISTEMA DE ESTOQUE ----")
+    print("----- SISTEMA DE ESTOQUE -----")
     print_menu_options()
     option = input("Selecione a opção desejada:\n\n>>>")
 

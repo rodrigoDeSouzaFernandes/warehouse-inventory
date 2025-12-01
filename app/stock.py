@@ -20,7 +20,7 @@ class Stock:
         self.__history = history
 
     def get_history(self):
-        return self.__history.get_history(5)
+        return self.__history.get_history(100)
     
     def get_products(self) -> list[Product]:
         return self.__products
@@ -50,8 +50,9 @@ class Stock:
             self.update_product(stock_product)
         else:
             next_id: int = self.__products[-1].id + 1 if len(self.__products) > 0 else 1
-            new_product: Product = Product(next_id, product.name, product.quantity)
-            movement = StockMovement(new_product, product.date, product.operator, Operation.ADD)
+            new_product = Product(next_id, product.name, product.quantity)
+            history_copy = Product(new_product.id, new_product.name, new_product.quantity)
+            movement = StockMovement(history_copy, product.date, product.operator, Operation.ADD)
             self.__products.append(new_product)
         self.__history.add_history(movement)
     
@@ -67,13 +68,8 @@ class Stock:
         stock_product.quantity = stock_product.quantity - product.quantity
         self.update_product(stock_product)
 
-        movement = StockMovement(stock_product, datetime.today(), product.operator, Operation.REMOVE )
+        history_product = Product(product.id, stock_product.name, product.quantity)
+        movement = StockMovement(history_product, datetime.today(), product.operator, Operation.REMOVE )
         self.__history.add_history(movement)
-        
+
         return stock_product
-
-        
-
-
-
-
