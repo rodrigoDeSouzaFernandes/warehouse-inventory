@@ -1,0 +1,17 @@
+{
+  "name": "estoque-almoxarifado",
+  "version": "1.0.0",
+  "description": "Console app to handle simple stock acitons",
+  "scripts": {
+    "start": "python app/main.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigoDeSouzaFernandes/warehouse-inventory.git"
+  },
+  "author": "Rodrigo de Souza Fernandes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigoDeSouzaFernandes/warehouse-inventory/issues"
+  }
+}

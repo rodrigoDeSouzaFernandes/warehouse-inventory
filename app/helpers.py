@@ -9,31 +9,33 @@ ALERT = "\033[93m"
 RESET = "\033[0m"
 
 def input_text(message:str) -> str:
-    name = input(f"{message}:\n>>>")
+    name = input(f"\n{message}:\n\n>>>")
     while(len(name) < 2):
         print(f"{ALERT}O campo deve ter pelo menos 2 caracteres{RESET}")
-        name = input(f"{message}:\n>>>")
+        name = input(f"{message}:\n\n>>>")
     return name
 
 def input_int(message:str) -> int:
-    quantity = input(f"{message}:\n>>>")
+    quantity = input(f"\n{message}:\n\n>>>")
     while(not is_valid_quanity(quantity)):
         print(f"{ALERT}Informe um número inteiro, positivo e maior que zero (0){RESET}")
-        quantity = input(f"{message}:\n>>>")
+        quantity = input(f"{message}:\n\n>>>")
     return int(quantity)
 
 def input_date():
-    date = input("Informe a data da entrada (dd/mm/yyyy):\n[Pressione enter sem digitar qualquer dado para prosseguir com a data atual]\n>>>")
-    while(not is_valid_date(date)):
+    converted_date = datetime.today()
+    date = input("\nInforme a data da entrada (dd/mm/yyyy):\n[Pressione enter sem digitar qualquer dado para prosseguir com a data atual]\n>>>")
+
+    while(True):
         if(date == ""):
-            return datetime.today()
-        print(f"{ERROR}Erro: Data inválida{RESET}")
-        date = input(f"{ALERT}Entre com o campo vazio para data de hoje, ou informe uma data no formato \"dd/mm/yyyy\"{RESET}\n>>>")       
+            return datetime.today() 
         try:
-            date = datetime.strptime(date, "%d/%m/%Y")
+            converted_date = datetime.strptime(date, "%d/%m/%Y")
+            break
         except:
-            date = None    
-    return date
+            print(f"\n{ERROR}Erro: Data inválida{RESET}")    
+            date = input(f"{ALERT}Entre com o campo vazio para data de hoje, ou informe uma data no formato \"dd/mm/yyyy\"{RESET}\n>>>")  
+    return converted_date
 
 def clear_console():
     if os.name == 'nt':

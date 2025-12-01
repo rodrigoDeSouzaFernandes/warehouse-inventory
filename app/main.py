@@ -7,6 +7,17 @@ from helpers import ERROR, SUCCESS, ALERT, RESET, input_text, input_int, input_d
 history = History()
 stock = Stock(history)
 
+while(True):
+    clear_console()
+    operator = input_text("Informe o seu nome")
+    print(f"{ALERT}\nSeu nome é {operator}{RESET}")
+    option = input("\n1 - Confirmar\n0 - Alterar\n\n>>>")
+
+    match option:
+        case "1": break
+        case "0": pass
+        case _: print("teste")
+
 menuOptions = {
     "1": "Listar todos os produtos",
     "2": "Buscar um produto",
@@ -22,6 +33,8 @@ def print_menu_options():
     print("\n0 - SAIR\n")
 
 def add_product():
+    clear_console()
+    print("----- Adicionar produto -----")
     name = input_text("Informe o nome do produto")
     quantity = input_int("Informe a quantidade")
     date = input_date()
@@ -35,10 +48,11 @@ def add_product():
 
     stock.add_product(new_product)
     print(f"\n{SUCCESS}{quantity} unidade(s) do produto \"{name}\" adicionada(s) ao estoque\n{RESET}")
-    input("\nPressione ENTER para retornar\n")
+    input("Pressione ENTER para retornar")
 
 def remove_product():
     clear_console()
+    print("----- Retirar produto -----")
     id = input_int("Informe o ID do produto a ser retirado")
     quantity = input_int("Informe a quantidade a ser retirada")
 
@@ -53,7 +67,7 @@ def remove_product():
         print(f"\n{SUCCESS}Foram retiradas {quantity} unidade(s) do produto \"{product.name}\" do estoque\n{RESET}")
     except ValueError as error:
         print(f"\n{ERROR}{str(error)}\n{RESET}")
-    input("Pressione ENTER para retornar ao menu inicial\n")
+    input("Pressione ENTER para retornar ao menu inicial")
 
 
 def list_all_products():
@@ -131,7 +145,7 @@ while(isRunning):
     clear_console()
     print("---- SISTEMA DE ESTOQUE ----")
     print_menu_options()
-    option = input("Selecione a opção desejada:\n>>>")
+    option = input("Selecione a opção desejada:\n\n>>>")
 
     match option:
         case '1':
