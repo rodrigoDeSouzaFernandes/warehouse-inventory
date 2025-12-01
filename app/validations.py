@@ -1,4 +1,3 @@
-import re
 from datetime import datetime
 
 def isIntegerPositive(value: str) -> bool:
@@ -15,5 +14,5 @@ def is_valid_date(value: str) -> bool:
     try:
         datetime.strptime(value, "%d/%m/%Y")
         return True
-    except:
+    except Exception as err:
         return False

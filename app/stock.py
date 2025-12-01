@@ -32,7 +32,7 @@ class Stock:
         return next((p for p in self.__products if p.id == id), None)
     
     def update_product(self, product: Product) -> None:
-        index = next((i for i, item in self.__products if item.id == product.id), None)
+        index = next((i for i, item in enumerate(self.__products) if item.id == product.id), None)
         if (index is None): raise Exception("Id não encontrado na lista de produtos")
         self.__products[index].quantity = product.quantity
 
@@ -54,6 +54,9 @@ class Stock:
     
     def withdraw_product(self, product: WithdrawProductDTO) -> None:
         stock_product = self.get_product_by_id(product.id)
+
+        if(stock_product is None):
+            raise ValueError("Não há um produto com esse ID")
 
         if(product.quantity > stock_product.quantity):
             raise ValueError("Estoque insuficiente para realizar esta operação")

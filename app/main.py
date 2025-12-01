@@ -1,6 +1,6 @@
 from stock import Stock
 from history import History
-from models import AddProductDTO
+from models import AddProductDTO, WithdrawProductDTO
 
 from datetime import datetime
 
@@ -16,10 +16,10 @@ history = History()
 stock = Stock(history)
 
 menuOptions = {
-    "1": "Buscar um produto por Id",
-    "2": "Listar todos os produtos",
-    "3": "Registrar novo produto",
-    "4": "Excluir um produto",
+    "1": "Listar todos os produtos",
+    "2": "Buscar um produto por Id",
+    "3": "Adicionar um produto",
+    "4": "Retirar um produto",
     "5": "Imprimir histórico recente de movimentações",
 }
 
@@ -75,11 +75,35 @@ def add_product():
 
 def remove_product():
     id = input_int("Informe o ID do protudo a ser excluído")
+    quantity = input_int("Informe a quantidade")
 
+    product = WithdrawProductDTO(
+        id,
+        quantity
+    )
+
+    try:
+        stock.withdraw_product(product)
+    except ValueError as error:
+        print(f"\n{ERROR}{str(error)}\n{RESET}")
+
+def list_all_products():
+    products = stock.get_products()
+    count = 0
+    print(f"{"ID":<5} | {"Nome":<20} | {"Quantidade":<5}")
+
+    for product in products:
+        if(product.quantity > 0):
+            count+=1
+            print(f"{product.id:<5} | {product.name:<20} | {product.quantity:<5}")
     
+    print(f"\nTotal de produtos encontrados: {count}\n")
+    input("Pressione ENTER para retornar ao menu inicial\n")
+            
 
 
-isRunning = False
+
+isRunning = True
 
 while(isRunning):
     print("---- SISTEMA DE ESTOQUE ----")
@@ -87,6 +111,12 @@ while(isRunning):
     option = input("Selecione a opção desejada:\n>>>")
 
     match option:
+        case '1':
+            list_all_products()
+        case "3":
+            add_product()
+        case"4":
+            remove_product()
         case "0":
             print("\nPrograma encerrado\n")
             isRunning = False
