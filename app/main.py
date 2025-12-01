@@ -4,8 +4,6 @@ from models import AddProductDTO, WithdrawProductDTO
 
 from helpers import ERROR, SUCCESS, ALERT, RESET, input_text, input_int, input_date, clear_console
 
-
-
 history = History()
 stock = Stock(history)
 
@@ -22,10 +20,6 @@ def print_menu_options():
     for key in menuOptions:
         print(f"{key} - {menuOptions[key]}")
     print("\n0 - SAIR\n")
-    
-option = ""
-
-
 
 def add_product():
     name = input_text("Informe o nome do produto")
@@ -41,6 +35,7 @@ def add_product():
 
     stock.add_product(new_product)
     print(f"\n{SUCCESS}{quantity} unidade(s) do produto \"{name}\" adicionada(s) ao estoque\n{RESET}")
+    input("\nPressione ENTER para retornar\n")
 
 def remove_product():
     clear_console()
@@ -49,7 +44,8 @@ def remove_product():
 
     product = WithdrawProductDTO(
         id,
-        quantity
+        quantity,
+        operator="Rodrigo"
     )
 
     try:
@@ -115,8 +111,19 @@ def get_product():
                 break
             case _:
                 print(f"{ALERT}\nEscolha uma das opções a seguir:{RESET}")
-    
 
+def get_history():
+    clear_console()
+    history = stock.get_history()
+
+    if len(history) > 0:
+        print(f"{"Produto":<20} | {"Quantidade":<10} | {"Operação":<10} | {"Operador":<10} | {"Data":<10}")
+        for item in history:
+            print(f"{item.product.name:<20} | {item.product.quantity:<10} | {item.operation.value:<10} | {item.operator:<10} | {item.date.strftime("%d/%m/%Y %H:%M"):<20} ")
+    else:    
+        print(f"{ALERT}Histórico vazio, ainda não houveram movimentações{RESET}")
+    
+    input("\nPressione ENTER para retornar\n")
 
 isRunning = True
 
@@ -135,6 +142,8 @@ while(isRunning):
             add_product()
         case "4":
             remove_product()
+        case "5":
+            get_history()
         case "0":
             print("\nPrograma encerrado\n")
             isRunning = False

@@ -1,4 +1,4 @@
-from models import Product, StockMovement, AddProductDTO, WithdrawProductDTO
+from models import Product, StockMovement, AddProductDTO, WithdrawProductDTO, Operation
 from datetime import datetime
 from history import History
 
@@ -28,6 +28,9 @@ class Stock:
     def get_products_by_name(self, name:str) -> list[Product] | list:
         return [p for p in self.__products if name.lower() in p.name.lower()]
     
+    def get_product_by_name(self, name:str) -> Product:
+        return next((p for p in self.__products if name == p.name), None)
+    
     def get_product_by_id(self, id:int) -> Product | None:
         return next((p for p in self.__products if p.id == id), None)
     
@@ -42,13 +45,13 @@ class Stock:
 
         if stock_product:    
             product_movement = Product(stock_product.id, stock_product.name, product.quantity)
-            movement = StockMovement(product_movement, product.date, product.operator)
+            movement = StockMovement(product_movement, product.date, product.operator, Operation.ADD)
             stock_product.quantity += product.quantity
             self.update_product(stock_product)
         else:
             next_id: int = self.__products[-1].id + 1 if len(self.__products) > 0 else 1
             new_product: Product = Product(next_id, product.name, product.quantity)
-            movement = StockMovement(new_product, product.date, product.operator)
+            movement = StockMovement(new_product, product.date, product.operator, Operation.ADD)
             self.__products.append(new_product)
         self.__history.add_history(movement)
     
@@ -64,6 +67,9 @@ class Stock:
         stock_product.quantity = stock_product.quantity - product.quantity
         self.update_product(stock_product)
 
+        movement = StockMovement(stock_product, datetime.today(), product.operator, Operation.REMOVE )
+        self.__history.add_history(movement)
+        
         return stock_product
 
         
