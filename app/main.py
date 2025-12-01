@@ -2,15 +2,9 @@ from stock import Stock
 from history import History
 from models import AddProductDTO, WithdrawProductDTO
 
-from datetime import datetime
+from helpers import ERROR, SUCCESS, ALERT, RESET, input_text, input_int, input_date, clear_console
 
-from validations import is_valid_quanity, is_valid_date
 
-# Códigos ANSI para cores
-ERROR = "\033[91m"
-SUCCESS = "\033[92m"
-ALERT = "\033[93m"
-RESET = "\033[0m"
 
 history = History()
 stock = Stock(history)
@@ -31,32 +25,7 @@ def print_menu_options():
     
 option = ""
 
-def input_text(message:str) -> str:
-    name = input(f"{message}:\n>>>")
-    while(len(name) < 2):
-        print(f"{ALERT}O campo deve ter pelo menos 2 caracteres{RESET}")
-        name = input(f"{message}:\n>>>")
-    return name
 
-def input_int(message:str) -> int:
-    quantity = input(f"{message}:\n>>>")
-    while(not is_valid_quanity(quantity)):
-        print(f"{ALERT}Informe um número inteiro, positivo e maior que zero (0){RESET}")
-        quantity = input(f"{message}:\n>>>")
-    return int(quantity)
-
-def input_date():
-    date = input("Informe a data da entrada (dd/mm/yyyy):\n[Pressione enter sem digitar qualquer dado para prosseguir com a data atual]\n>>>")
-    while(not is_valid_date(date)):
-        if(date == ""):
-            return datetime.today()
-        print(f"{ERROR}Erro: Data inválida{RESET}")
-        date = input(f"{ALERT}Entre com o campo vazio para data de hoje, ou informe uma data no formato \"dd/mm/yyyy\"{RESET}\n>>>")       
-        try:
-            date = datetime.strptime(date, "%d/%m/%Y")
-        except:
-            date = None    
-    return date
 
 def add_product():
     name = input_text("Informe o nome do produto")
@@ -74,7 +43,7 @@ def add_product():
     print(f"\n{SUCCESS}{quantity} unidade(s) do produto \"{name}\" adicionada(s) ao estoque\n{RESET}")
 
 def remove_product():
-    id = input_int("Informe o ID do protudo a ser excluído")
+    id = input_int("Informe o ID do produto a ser excluído")
     quantity = input_int("Informe a quantidade")
 
     product = WithdrawProductDTO(
@@ -86,21 +55,51 @@ def remove_product():
         stock.withdraw_product(product)
     except ValueError as error:
         print(f"\n{ERROR}{str(error)}\n{RESET}")
+        input("Pressione ENTER para retornar ao menu inicial\n")
+
 
 def list_all_products():
     products = stock.get_products()
-    count = 0
     print(f"{"ID":<5} | {"Nome":<20} | {"Quantidade":<5}")
 
     for product in products:
-        if(product.quantity > 0):
-            count+=1
             print(f"{product.id:<5} | {product.name:<20} | {product.quantity:<5}")
     
-    print(f"\nTotal de produtos encontrados: {count}\n")
+    print(f"\nTotal de produtos encontrados: {len(products)}\n")
     input("Pressione ENTER para retornar ao menu inicial\n")
-            
 
+def get_product_by_id():
+    id = input_int("Informe o ID do produto")
+    product = stock.get_product_by_id(id)
+    if product is None:
+        print(f"{ERROR}Nenhum produto com este ID foi encontrado{RESET}")
+    else:
+        clear_console()
+        print("----------------------")
+        print(f"ID: {product.id}")
+        print(f"Nome: {product.name}")
+        print(f"Quantidade: {product.quantity}")
+        print("----------------------")
+    input("Pressione ENTER para retornar\n")
+
+def get_products_by_name():
+    name = input_text("Informe o nome ou parte do nome do produto")
+
+            
+def get_product():
+    clear_console()
+    while(True):
+        option = input("\nDeseja buscar o produto por:\n\n1 - Nome\n2 - Id\n\n0 - Voltar\n\n>>>")
+        match option:
+            case "1":
+                print('implementar')
+            case "2":
+                get_product_by_id()
+            case "3":
+                break
+            case _:
+                print(f"{ALERT}Escolha uma das opções acima{RESET}")
+    
 
 
 isRunning = True
@@ -113,6 +112,8 @@ while(isRunning):
     match option:
         case '1':
             list_all_products()
+        case "2":
+            get_product()
         case "3":
             add_product()
         case"4":
