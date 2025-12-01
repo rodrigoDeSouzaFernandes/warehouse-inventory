@@ -25,8 +25,8 @@ class Stock:
     def get_products(self) -> list[Product]:
         return self.__products
 
-    def get_product_by_name(self, name:str) -> Product | None:
-        return next((p for p in self.__products if p.name == name), None)
+    def get_products_by_name(self, name:str) -> list[Product] | list:
+        return [p for p in self.__products if name.lower() in p.name.lower()]
     
     def get_product_by_id(self, id:int) -> Product | None:
         return next((p for p in self.__products if p.id == id), None)
@@ -52,7 +52,7 @@ class Stock:
             self.__products.append(new_product)
         self.__history.add_history(movement)
     
-    def withdraw_product(self, product: WithdrawProductDTO) -> None:
+    def withdraw_product(self, product: WithdrawProductDTO) -> Product:
         stock_product = self.get_product_by_id(product.id)
 
         if(stock_product is None):
@@ -63,6 +63,8 @@ class Stock:
         
         stock_product.quantity = stock_product.quantity - product.quantity
         self.update_product(stock_product)
+
+        return stock_product
 
         
 
