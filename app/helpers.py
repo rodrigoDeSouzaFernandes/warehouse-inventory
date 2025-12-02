@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from validations import is_valid_date, is_valid_quanity
 
@@ -37,8 +36,7 @@ def input_date():
             date = input(f"{ALERT}Entre com o campo vazio para data de hoje, ou informe uma data no formato \"dd/mm/yyyy\"{RESET}\n>>>")  
     return converted_date
 
+# Limpa o console usando códigos ANSI (move cursor e apaga a tela)
 def clear_console():
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
+    print("\033c", end="")
+

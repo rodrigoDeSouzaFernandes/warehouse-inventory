@@ -129,7 +129,7 @@ def get_history():
     history = stock.get_history()
 
     if len(history) > 0:
-        print(f"{"Produto":<20} | {"Quantidade":<10} | {"Operação":<10} | {"Operador":<10} | {"Data":<10}")
+        print(f"\n{"Produto":<20} | {"Quantidade":<10} | {"Operação":<10} | {"Operador":<10} | {"Data":<10}")
         for item in history:
             print(f"{item.product.name:<20} | {item.product.quantity:<10} | {item.operation.value:<10} | {item.operator:<10} | {item.date.strftime("%d/%m/%Y %H:%M"):<20} ")
     else:    
@@ -138,7 +138,6 @@ def get_history():
     input("\nPressione ENTER para retornar\n")
 
 while(True):
-    clear_console()
     print("----- SISTEMA DE ESTOQUE -----")
     operator = input_text("Informe o seu nome")
     print(f"{ALERT}\nSeu nome é {operator}{RESET}")
